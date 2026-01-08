@@ -1,0 +1,18 @@
+{
+  "name": "mindfactory-challenge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"pnpm --filter backend start:dev\" \"pnpm --filter frontend dev\"",
+    "start": "concurrently \"pnpm --filter backend start:prod\" \"pnpm --filter frontend start\"",
+    "test": "pnpm --filter backend test && pnpm --filter frontend test",
+    "build": "pnpm --filter backend build && pnpm --filter frontend build"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "author": "DaniielDz",
+  "license": "ISC",
+  "packageManager": "pnpm@10.27.0"
+}
