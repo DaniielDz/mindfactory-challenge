@@ -18,7 +18,7 @@ export class AuthController {
     @Body() loginDto: LoginDto,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const { access_token } = await this.authService.login(loginDto);
+    const { access_token, user } = await this.authService.login(loginDto);
 
     res.cookie('access_token', access_token, {
       httpOnly: true,
@@ -27,6 +27,6 @@ export class AuthController {
       maxAge: 1000 * 60 * 60,
     });
 
-    return { message: 'Login exitoso' };
+    return { message: 'Login exitoso', user };
   }
 }
