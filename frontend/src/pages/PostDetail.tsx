@@ -62,7 +62,6 @@ export const PostDetail = () => {
     }
   };
 
-  // Render de Carga
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -71,15 +70,12 @@ export const PostDetail = () => {
     );
   }
 
-  // Render si no existe
   if (!post) return null;
 
-  // Lógica de Propiedad: ¿Soy el dueño?
   const isOwner = user?.id === post.user_id;
 
   return (
     <div className="max-w-3xl mx-auto">
-      {/* Botón Volver */}
       <Link
         to="/"
         className="inline-flex items-center text-gray-500 hover:text-blue-600 mb-6 transition-colors"
@@ -89,10 +85,8 @@ export const PostDetail = () => {
       </Link>
 
       <article className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        {/* Header del Post */}
         <div className="p-6 border-b border-gray-100 bg-gray-50/50">
           {isEditing ? (
-            /* MODO EDICIÓN: Inputs */
             <div className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">
@@ -102,15 +96,17 @@ export const PostDetail = () => {
                   {...register('title')}
                   className="w-full text-xl font-bold px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white"
                 />
-                {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message}</p>}
+                {errors.title && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.title.message}
+                  </p>
+                )}
               </div>
             </div>
           ) : (
-            /* MODO VISTA: Título estático */
             <div className="flex justify-between items-start">
               <h1 className="text-3xl font-bold text-gray-900">{post.title}</h1>
 
-              {/* Botón Editar (Solo visible para el dueño) */}
               {isOwner && (
                 <button
                   onClick={() => setIsEditing(true)}
@@ -123,12 +119,16 @@ export const PostDetail = () => {
             </div>
           )}
 
-          {/* Metadata (Autor y Fecha) */}
           <div className="flex items-center gap-4 mt-4 text-sm text-gray-500">
-            <div className="flex items-center gap-1.5">
+            <Link
+              to={`/profile/${post.user_id}`}
+              className="flex items-center gap-1.5"
+            >
               <User className="h-4 w-4 text-blue-500" />
-              <span className="font-medium text-gray-700">{post.user.name}</span>
-            </div>
+              <span className="font-medium text-gray-700">
+                {post.user.name}
+              </span>
+            </Link>
             <div className="flex items-center gap-1.5">
               <Calendar className="h-4 w-4 text-gray-400" />
               <span>{new Date(post.created_at).toLocaleDateString()}</span>
@@ -147,7 +147,11 @@ export const PostDetail = () => {
                 rows={8}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none bg-white text-gray-700 leading-relaxed"
               />
-              {errors.content && <p className="text-red-500 text-xs mt-1">{errors.content.message}</p>}
+              {errors.content && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.content.message}
+                </p>
+              )}
 
               <div className="flex justify-end gap-3 pt-2">
                 <button
@@ -165,7 +169,9 @@ export const PostDetail = () => {
                   disabled={isSubmitting}
                   className="flex items-center gap-2 px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors disabled:opacity-50"
                 >
-                  {isSubmitting ? 'Guardando...' : (
+                  {isSubmitting ? (
+                    'Guardando...'
+                  ) : (
                     <>
                       <Save className="h-4 w-4" /> Guardar Cambios
                     </>
