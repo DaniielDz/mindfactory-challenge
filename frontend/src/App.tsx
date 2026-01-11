@@ -1,12 +1,12 @@
 import { Routes, Route, Navigate, BrowserRouter } from 'react-router-dom';
 import { Toaster } from 'sonner';
-import { ProtectedRoute } from './components/ProtectedRoute';
 import { Layout } from './components/Layout';
 import { Feed } from './pages/Feed';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { AuthProvider } from './context/AuthProvider';
 import { PostDetail } from './pages/PostDetail';
+import { ProfilePage } from './pages/ProfilePage';
 
 function App() {
   return (
@@ -20,16 +20,7 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/" element={<Feed />} />
             <Route path="/post/:id" element={<PostDetail />} />
-          </Route>
-
-          {/* Rutas Privadas con Layout */}
-          <Route element={<ProtectedRoute />}>
-            <Route element={<Layout />}>
-              <Route
-                path="/profile/:id"
-                element={<div>Perfil (Próximamente)</div>}
-              />
-            </Route>
+            <Route path="/profile/:id" element={<ProfilePage />} />
           </Route>
 
           {/* Catch all */}
