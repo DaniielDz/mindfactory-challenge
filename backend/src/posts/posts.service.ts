@@ -53,6 +53,15 @@ export class PostsService {
     return await this.prisma.post.update({
       where: { id },
       data: updatePostDto,
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
     });
   }
 }

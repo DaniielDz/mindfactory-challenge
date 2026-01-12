@@ -1,10 +1,11 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import api from '../lib/axios';
 import { toast } from 'sonner';
+
 import { PostForm } from './PostForm';
-import type { CreatePostData, UpdatePostData } from '../types/post';
-import { createPostSchema } from '../schemas/posts';
+import type { CreatePostData, UpdatePostData } from '../../types/post';
+import { createPostSchema } from '../../schemas/posts';
+import { postsService } from '../../services/posts';
 
 interface Props {
   onPostCreated: () => void;
@@ -22,7 +23,7 @@ export const CreatePostForm = ({ onPostCreated }: Props) => {
 
   const onSubmit = async (data: CreatePostData | UpdatePostData) => {
     try {
-      await api.post('/posts', data);
+      await postsService.create(data as CreatePostData);
       toast.success('¡Post publicado!');
       reset();
       onPostCreated();
@@ -43,6 +44,7 @@ export const CreatePostForm = ({ onPostCreated }: Props) => {
         errors={errors}
         isSubmitting={isSubmitting}
         onSubmit={onSubmit}
+        buttonLabel="Publicar"
       />
     </div>
   );

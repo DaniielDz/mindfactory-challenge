@@ -1,11 +1,11 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { PostForm } from './PostForm';
 import { useForm } from 'react-hook-form';
-import { updatePostSchema } from '../schemas/posts';
-import type { UpdatePostData, Post } from '../types/post';
-import api from '../lib/axios';
-import { toast } from 'sonner';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { X } from 'lucide-react';
+import { toast } from 'sonner';
+import { PostForm } from './PostForm';
+import type { Post, UpdatePostData } from '../../types/post';
+import { updatePostSchema } from '../../schemas/posts';
+import { postsService } from '../../services/posts';
 
 interface Props {
   post: Post;
@@ -28,7 +28,7 @@ export const EditPostModal = ({ post, onPostUpdated, onClose }: Props) => {
 
   const onSubmit = async (data: UpdatePostData) => {
     try {
-      await api.put(`/posts/${post.id}`, data);
+      await postsService.update(post.id, data);
       toast.success('¡Post actualizado!');
       onPostUpdated();
     } catch (error) {
@@ -39,16 +39,16 @@ export const EditPostModal = ({ post, onPostUpdated, onClose }: Props) => {
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm"
+      className="fixed px-5 lg:px-0 inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-xl shadow-xl p-6 w-full max-w-lg relative"
+        className="bg-white rounded-xl shadow-xl p-6 w-full max-w-lg relative animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-1 rounded-full transition-colors cursor-pointer"
         >
           <X className="h-5 w-5" />
         </button>

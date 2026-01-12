@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Newspaper } from 'lucide-react';
-import api from '../../lib/axios';
 import type { Post } from '../../types/post';
-import { PostCard } from '../PostCard';
+import { PostCard } from '../posts/PostCard';
+import { postsService } from '../../services/posts';
 
 interface Props {
   userId: string;
@@ -16,8 +16,8 @@ export const ProfilePosts = ({ userId, userName }: Props) => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const { data } = await api.get('/posts');
-        const userPosts = data.filter((post: Post) => post.user_id === userId);
+        const data = await postsService.getAll();
+        const userPosts = data.filter((post) => post.user_id === userId);
         setPosts(userPosts);
       } catch (error) {
         console.error('Error fetching user posts', error);
@@ -47,7 +47,7 @@ export const ProfilePosts = ({ userId, userName }: Props) => {
       {posts.length === 0 ? (
         <div className="text-center py-10 bg-gray-50 rounded-xl border border-dashed border-gray-300">
           <p className="text-gray-500">
-            Este usuario aún no ha publicado nada.
+            {userName} aún no ha creado ninguna publicación.
           </p>
         </div>
       ) : (
