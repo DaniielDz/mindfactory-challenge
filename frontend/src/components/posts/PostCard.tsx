@@ -5,8 +5,8 @@ import {
   Pencil,
   User as UserIcon,
 } from 'lucide-react';
-import type { Post } from '../types/post';
-import { useAuth } from '../hooks/useAuth';
+import type { Post } from '../../types/post';
+import { useAuth } from '../../hooks/useAuth';
 
 interface Props {
   post: Post;
@@ -27,10 +27,13 @@ export const PostCard = ({ post, onEdit }: Props) => {
             </h3>
           </Link>
           <div className="flex items-center gap-2 text-sm text-gray-500">
-            <span className="font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full flex items-center gap-1">
+            <Link
+              to={`/profile/${post.user_id}`}
+              className="font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full flex items-center gap-1 hover:underline"
+            >
               <UserIcon className="h-3 w-3" />
               {post.user.name}
-            </span>
+            </Link>
             <span>•</span>
             <div className="flex items-center gap-1">
               <Calendar className="h-3 w-3" />
@@ -45,7 +48,7 @@ export const PostCard = ({ post, onEdit }: Props) => {
               e.preventDefault();
               onEdit(post);
             }}
-            className="p-2 rounded-full bg-gray-50 hover:bg-blue-600 group transition-colors"
+            className="p-2 rounded-full bg-gray-50 hover:bg-blue-600 group transition-colors cursor-pointer"
             title="Editar"
           >
             <Pencil className="w-4 h-4 text-gray-500 group-hover:text-white" />
