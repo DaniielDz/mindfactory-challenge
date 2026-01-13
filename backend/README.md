@@ -1,98 +1,276 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Backend - MindFactory Challenge
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API REST desarrollada con **NestJS** para el sistema de gestión de usuarios y publicaciones. Implementa autenticación JWT, validación de datos, y ORM con Prisma.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🛠 Tech Stack
 
-## Description
+- **Framework**: NestJS (Node.js + TypeScript)
+- **ORM**: Prisma
+- **Base de Datos**: PostgreSQL
+- **Autenticación**: JWT (JSON Web Tokens) + Passport
+- **Validación**: class-validator + class-transformer
+- **Hash de Contraseñas**: bcrypt
+- **Testing**: Jest
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 📂 Estructura del Proyecto
 
-## Project setup
-
-```bash
-$ pnpm install
+```text
+backend/
+├── src/
+│ ├── auth/ # Módulo de autenticación
+│ │ ├── dto/ # DTOs de autenticación (register, login)
+│ │ ├── guards/ # Guards de autenticación (JWT)
+│ │ ├── interfaces/ # Interfaces (RequestWithUser)
+│ │ ├── strategies/ # Estrategias de Passport (JWT)
+│ │ ├── auth.controller.ts
+│ │ ├── auth.service.ts
+│ │ ├── auth.service.spec.ts
+│ │ └── auth.module.ts
+│ ├── users/ # Módulo de usuarios
+│ │ ├── dto/ # DTOs (update-user)
+│ │ ├── users.controller.ts
+│ │ ├── users.service.ts
+│ │ ├── users.service.spec.ts
+│ │ └── users.module.ts
+│ ├── posts/ # Módulo de publicaciones
+│ │ ├── dto/ # DTOs (create-post, update-post)
+│ │ ├── posts.controller.ts
+│ │ ├── posts.service.ts
+│ │ ├── posts.service.spec.ts
+│ │ └── posts.module.ts
+│ ├── prisma/ # Servicio de Prisma
+│ │ ├── prisma.service.ts
+│ │ └── prisma.module.ts
+│ ├── app.controller.ts # Controller principal
+│ ├── app.service.ts # Service principal
+│ ├── app.module.ts # Módulo principal
+│ └── main.ts # Punto de entrada
+├── prisma/
+│ └── schema.prisma # Esquema de base de datos
+├── test/ # Tests E2E
+│ ├── app.e2e-spec.ts
+│ └── jest-e2e.json
+└── generated/ # Cliente Prisma generado (custom output)
+  └── prisma/ # Cliente Prisma (configurado en schema.prisma)
 ```
 
-## Compile and run the project
+## 📥 Instalación
+
+### 1. Instalar dependencias
 
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+cd backend
+pnpm install
 ```
 
-## Run tests
+### 2. Configurar variables de entorno
 
 ```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+cp .env.example .env
 ```
 
-## Deployment
+Edita el archivo `.env` con tus valores:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+```env
+# Database Connection
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mindfactory_db
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+# Server Configuration
+PORT=3000
+NODE_ENV=development
+
+# JWT Configuration
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+```
+
+### 3. Iniciar la base de datos
+
+Desde la raíz del proyecto:
 
 ```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+docker-compose up -d
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 🗄️ Variables de Entorno
 
-## Resources
+| Variable       | Descripción                     | Valor por defecto | Requerida |
+| -------------- | ------------------------------- | ----------------- | --------- |
+| `DATABASE_URL` | Connection string de PostgreSQL | -                 | ✅        |
+| `PORT`         | Puerto del servidor             | 3000              | ❌        |
+| `NODE_ENV`     | Entorno de ejecución            | development       | ❌        |
+| `JWT_SECRET`   | Secreto para firmar tokens JWT  | -                 | ✅        |
 
-Check out a few resources that may come in handy when working with NestJS:
+## 🔄 Migraciones de Base de Datos
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### Generar cliente Prisma
 
-## Support
+Esto genera el cliente de Prisma basado en el schema:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+pnpm prisma generate
+```
 
-## Stay in touch
+### Aplicar migraciones en desarrollo
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+pnpm prisma migrate dev
+```
 
-## License
+Este comando:
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+1. Crea una nueva migración si hay cambios en el schema
+2. Aplica las migraciones pendientes
+3. Genera el cliente Prisma
+
+### Aplicar migraciones en producción
+
+```bash
+pnpm prisma migrate deploy
+```
+
+### Crear una nueva migración
+
+Después de modificar `prisma/schema.prisma`:
+
+```bash
+pnpm prisma migrate dev --name nombre_descriptivo
+```
+
+### Resetear la base de datos
+
+```bash
+pnpm prisma migrate reset
+```
+
+### Abrir Prisma Studio
+
+Interfaz visual para explorar y editar la base de datos:
+
+```bash
+pnpm prisma studio
+```
+
+## 📜 Scripts Disponibles
+
+### Desarrollo
+
+```bash
+pnpm start:dev          # Inicia el servidor en modo desarrollo (watch mode)
+pnpm start:debug        # Inicia con debugger
+```
+
+### Producción
+
+```bash
+pnpm build              # Compila el proyecto
+pnpm start:prod         # Ejecuta la versión compilada
+```
+
+### Testing
+
+```bash
+pnpm test               # Ejecuta tests unitarios
+pnpm test:watch         # Tests en modo watch
+pnpm test:cov           # Tests con cobertura
+pnpm test:e2e           # Tests end-to-end
+```
+
+### Linting y Formato
+
+```bash
+pnpm lint               # Ejecuta ESLint
+pnpm format             # Formatea código con Prettier
+```
+
+## 🔌 API Endpoints
+
+### Autenticación
+
+| Método | Endpoint         | Descripción             | Auth |
+| ------ | ---------------- | ----------------------- | ---- |
+| POST   | `/auth/register` | Registrar nuevo usuario | ❌   |
+| POST   | `/auth/login`    | Iniciar sesión          | ❌   |
+
+### Usuarios
+
+| Método | Endpoint     | Descripción                | Auth |
+| ------ | ------------ | -------------------------- | ---- |
+| GET    | `/users/:id` | Obtener perfil del usuario | ❌   |
+| PUT    | `/users/:id` | Actualizar perfil          | ✅   |
+
+### Publicaciones
+
+| Método | Endpoint     | Descripción                         | Auth |
+| ------ | ------------ | ----------------------------------- | ---- |
+| GET    | `/posts`     | Listar todas las publicaciones      | ❌   |
+| POST   | `/posts`     | Crear publicación                   | ✅   |
+| GET    | `/posts/:id` | Obtener publicación por ID          | ❌   |
+| PUT    | `/posts/:id` | Actualizar publicación (solo autor) | ✅   |
+
+## 🧪 Testing
+
+### Estructura de Tests
+
+- **Tests Unitarios**: `src/**/*.spec.ts`
+- **Tests E2E**: `test/**/*.e2e-spec.ts`
+
+### Ejecutar Tests
+
+```bash
+# Tests unitarios
+pnpm test
+
+# Tests E2E
+pnpm test:e2e
+
+# Cobertura
+pnpm test:cov
+```
+
+### Configuración de Tests E2E
+
+Los tests E2E requieren una base de datos de test. Puedes configurar una conexión separada en `.env.test`.
+
+## 🏗️ Arquitectura
+
+### Patrón de Diseño
+
+El backend sigue la arquitectura modular de NestJS:
+
+- **Controllers**: Manejan las peticiones HTTP
+- **Services**: Contienen la lógica de negocio
+- **Modules**: Organizan la aplicación en funcionalidades
+- **DTOs**: Validan y transforman datos de entrada
+- **Guards**: Protegen rutas y validan autenticación
+
+### Validación
+
+Se utiliza `class-validator` con pipes globales para validar automáticamente todos los DTOs.
+
+### Autenticación
+
+- **Estrategia**: JWT con Passport
+- **Storage**: Los tokens JWT se almacenan en cookies HTTP-only y se extraen mediante un extractor personalizado en `JwtStrategy`
+- **Expiración**: 1 hora (configurado en `auth.module.ts` y en las cookies)
+- **Hash**: bcrypt con 10 salt rounds
+- **Cookie Security**: HTTP-only, Secure en producción, SameSite strict
+
+### Base de Datos
+
+- **ORM**: Prisma
+- **Migraciones**: Automáticas con Prisma Migrate
+- **Validación**: A nivel de schema y a nivel de aplicación
+
+## 🔐 Seguridad
+
+- ✅ Contraseñas hasheadas con bcrypt
+- ✅ Tokens JWT firmados
+- ✅ Cookies HTTP-only y Secure (en producción)
+- ✅ CORS configurado
+- ✅ Validación de datos con class-validator
+- ✅ Guards de autenticación en rutas protegidas
+- ✅ Validación de permisos (usuarios solo pueden modificar sus propias publicaciones)
+
+## 👨‍💻 Autor
+
+**DaniielDz**
