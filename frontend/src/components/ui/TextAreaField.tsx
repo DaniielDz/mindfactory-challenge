@@ -18,10 +18,14 @@ export const TextAreaField = ({
 }: Props) => {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">
+      <label
+        htmlFor={registration.name}
+        className="block text-sm font-medium text-gray-700 mb-1"
+      >
         {label}
       </label>
       <textarea
+        id={registration.name}
         rows={rows}
         placeholder={placeholder}
         {...registration}

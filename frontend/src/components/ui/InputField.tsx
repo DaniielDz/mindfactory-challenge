@@ -18,10 +18,14 @@ export const InputField = ({
 }: Props) => {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">
+      <label
+        htmlFor={registration.name}
+        className="block text-sm font-medium text-gray-700 mb-1"
+      >
         {label}
       </label>
       <input
+        id={registration.name}
         type={type}
         placeholder={placeholder}
         {...registration}
